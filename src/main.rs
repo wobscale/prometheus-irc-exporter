@@ -1,8 +1,11 @@
 extern crate prometheus;
 extern crate rocket;
 extern crate url;
+extern crate irc;
+extern crate rand;
 
-use std::io::{Cursor};
+use std::io::Cursor;
+use std::default::Default;
 
 use prometheus::{Opts, Gauge, Encoder};
 use rocket::handler::Outcome;
@@ -62,6 +65,8 @@ fn metrics<'r>(request: &'r Request, _: rocket::Data) -> rocket::handler::Outcom
 }
 
 fn scrape_irc_server(target: url::Url) -> Vec<Box<prometheus::Collector>> {
+    let nick = format!("promirc_{}", rand::random::<i32>());
+
     let up = Gauge::with_opts(Opts::new("up", "server is up")).unwrap();
     let tls_expiration = Gauge::with_opts(Opts::new("tls_expiration", "server tls expiration"))
         .unwrap();
@@ -69,8 +74,27 @@ fn scrape_irc_server(target: url::Url) -> Vec<Box<prometheus::Collector>> {
         .unwrap();
     let local_users = Gauge::with_opts(Opts::new("local_users", "number of local users")).unwrap();
     let uptime = Gauge::with_opts(Opts::new("uptime", "server uptime")).unwrap();
-    // TODO
-    up.inc();
+
+    let ssl = target.scheme() == "ircs";
+    let port = target.port().unwrap_or(if ssl { 6697 } else { 6667 });
+
+    let cfg = irc::client::prelude::Config{
+        nickname: Some(nick),
+        server: target.host().map(|h| h.to_string()),
+        port: Some(port),
+        use_ssl: Some(target.scheme() == "ircs"),
+        .. Default::default()
+    };
+
+    let server = match irc::client::prelude::IrcServer::from_config(cfg) {
+        Ok(s) => {
+            up.inc();
+            s
+        },
+        Err(s) => {
+            return vec![Box::new(up)];
+        },
+    };
 
     vec![Box::new(up)]
 }
