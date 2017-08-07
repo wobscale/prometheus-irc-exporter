@@ -1,0 +1,13 @@
+[package]
+name = "prometheus-irc-exporter"
+version = "0.1.0"
+authors = ["Euan Kemp <euank@euank.com>"]
+
+[dependencies]
+rocket = "0.3.0"
+rocket_codegen = "0.3.0"
+prometheus = {git = "https://github.com/pingcap/rust-prometheus"}
+serde = "*"
+serde_derive = "*"
+toml = "*"
+clap = "*"
