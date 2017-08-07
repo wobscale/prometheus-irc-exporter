@@ -1,18 +1,10 @@
 extern crate prometheus;
 extern crate rocket;
-#[macro_use]
-extern crate serde_derive;
-extern crate toml;
-#[macro_use]
-extern crate clap;
 extern crate url;
 
-use std::fs::File;
-use std::io::{Read, Cursor};
+use std::io::{Cursor};
 
-use clap::{App, Arg};
 use prometheus::{Opts, Gauge, Encoder};
-use rocket::State;
 use rocket::handler::Outcome;
 use rocket::http::{Status, Method};
 use rocket::{Request, Route};
@@ -45,7 +37,7 @@ fn metrics<'r>(request: &'r Request, _: rocket::Data) -> rocket::handler::Outcom
 
     let irc_url = match url::Url::parse(&target) {
         Ok(i) => i,
-        Err(e) => {
+        Err(_) => {
             return Outcome::failure(Status::new(400, "target must be a valid irc uri"));
         }
     };
@@ -57,7 +49,7 @@ fn metrics<'r>(request: &'r Request, _: rocket::Data) -> rocket::handler::Outcom
     let r = prometheus::Registry::new();
 
     for metrics in scrape_irc_server(irc_url) {
-        r.register(metrics);
+        r.register(metrics).unwrap();
     }
 
     let encoder = prometheus::TextEncoder::new();
@@ -77,8 +69,8 @@ fn scrape_irc_server(target: url::Url) -> Vec<Box<prometheus::Collector>> {
         .unwrap();
     let local_users = Gauge::with_opts(Opts::new("local_users", "number of local users")).unwrap();
     let uptime = Gauge::with_opts(Opts::new("uptime", "server uptime")).unwrap();
-
-
+    // TODO
     up.inc();
+
     vec![Box::new(up)]
 }

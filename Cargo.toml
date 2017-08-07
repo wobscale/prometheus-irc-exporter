@@ -7,8 +7,4 @@ authors = ["Euan Kemp <euank@euank.com>"]
 rocket = "0.3.0"
 rocket_codegen = "0.3.0"
 prometheus = {git = "https://github.com/pingcap/rust-prometheus"}
-serde = "*"
-serde_derive = "*"
-toml = "*"
-clap = "*"
 url = "*"
