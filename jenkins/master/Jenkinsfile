@@ -1,0 +1,35 @@
+#!groovy
+
+properties([
+    buildDiscarder(logRotator(daysToKeepStr: '20', numToKeepStr: '30')),
+
+    pipelineTriggers([
+      pollSCM('H/5 * * * *')
+    ])
+])
+
+node('docker') {
+  stage('SCM') {
+    checkout scm
+  }
+
+  stage('Push') {
+    withCredentials([usernamePassword(credentialsId: 'dockerhub-wobscalebot', 
+          passwordVariable: 'DOCKER_PASS', 
+          usernameVariable: 'DOCKER_USER')]) {
+
+      sh '''#!/bin/bash -ex
+        export HOME=${WORKSPACE}
+        docker login --username "${DOCKER_USER}" --password "${DOCKER_PASS}" docker.io
+
+        docker run \
+          -v $(pwd):/work \
+          -v /var/run:/var/run \
+          -v $HOME/.docker:/root/.docker \
+          --workdir /work \
+          euank/alpine-build:latest \
+          make docker-push
+      '''
+    }
+  }
+}
