@@ -47,7 +47,7 @@ func probeHandler(w http.ResponseWriter, r *http.Request) {
 	registry := prometheus.NewRegistry()
 
 	up := prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "up",
+		Name: "irc_up",
 		Help: "target irc server is up",
 	})
 	registry.MustRegister(up)
@@ -81,7 +81,7 @@ func probeHandler(w http.ResponseWriter, r *http.Request) {
 	if tgt.Scheme == "ircs" {
 		state := server.RawConnection.(*tls.Conn).ConnectionState()
 		tlsExpiryGauge := prometheus.NewGauge(prometheus.GaugeOpts{
-			Name: "ssl_expiry",
+			Name: "irc_ssl_expiry_epoch_seconds",
 			Help: "ssl expiry in unixtime, or zero for error",
 		})
 		registry.MustRegister(tlsExpiryGauge)
