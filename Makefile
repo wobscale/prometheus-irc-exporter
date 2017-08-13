@@ -10,8 +10,8 @@ REPO:=github.com/wobscale/prometheus-irc-exporter
 
 .PHONY: docker-push
 docker-push:
-	docker build -t wobscale/prometheus-irc-exporter:$(git rev-parse --short HEAD) .
-	docker push wobscale/prometheus-irc-exporter:$(git rev-parse --short HEAD)
+	docker build -t "wobscale/prometheus-irc-exporter:$(shell git rev-parse --short HEAD)" .
+	docker push "wobscale/prometheus-irc-exporter:$(shell git rev-parse --short HEAD)"
 
 .PHONY: clean
 clean:
