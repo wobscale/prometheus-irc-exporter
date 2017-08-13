@@ -1,0 +1,61 @@
+hash: f2889c251063d8aada9af0fc5ed9e9138f7c32a52504e2b0735842e314d3379e
+updated: 2017-08-12T23:19:07.976217332-07:00
+imports:
+- name: bitbucket.org/ww/goautoneg
+  version: 75cd24fc2f2c2a2088577d12123ddee5f54e0675
+- name: github.com/beorn7/perks
+  version: b965b613227fddccbfffe13eae360ed3fa822f8d
+  subpackages:
+  - quantile
+- name: github.com/DanielOaks/go-idn
+  version: 76db0e10dc6513445bbe3e4f5b2289ff1fdac88d
+  subpackages:
+  - idna2003/stringprep
+- name: github.com/golang/protobuf
+  version: 8616e8ee5e20a1704615e6c8d7afcdac06087a67
+  subpackages:
+  - proto
+- name: github.com/goshuirc/eventmgr
+  version: 060479027c934f620704224dbaf680d43176b011
+- name: github.com/goshuirc/irc-go
+  version: b081c1a2fb557bf7e484bf74dde61e288ebaa697
+  subpackages:
+  - client
+  - ircfmt
+  - ircmap
+  - ircmsg
+- name: github.com/matttproud/golang_protobuf_extensions
+  version: fc2b8d3a73c4867e51861bbdd5ae3c1f0869dd6a
+  subpackages:
+  - pbutil
+- name: github.com/prometheus/client_golang
+  version: c5b7fccd204277076155f10851dad72b76a49317
+  subpackages:
+  - prometheus
+  - prometheus/promhttp
+- name: github.com/prometheus/client_model
+  version: fa8ad6fec33561be4280a8f0514318c79d7f6cb6
+  subpackages:
+  - go
+- name: github.com/prometheus/common
+  version: ffe929a3f4c4faeaa10f2b9535c2b1be3ad15650
+  subpackages:
+  - expfmt
+  - model
+- name: github.com/prometheus/procfs
+  version: 454a56f35412459b5e684fd5ec0f9211b94f002a
+- name: golang.org/x/text
+  version: a8b38433e35b65ba247bb267317037dee1b70cea
+  subpackages:
+  - cases
+  - internal
+  - internal/tag
+  - language
+  - runes
+  - secure/bidirule
+  - secure/precis
+  - transform
+  - unicode/bidi
+  - unicode/norm
+  - width
+testImports: []
