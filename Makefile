@@ -4,9 +4,9 @@ REPO:=github.com/wobscale/prometheus-irc-exporter
 
 ./bin/prometheus-irc-exporter: $(GO_SOURCES)
 	@mkdir -p ./gopath/src/github.com/wobscale
-	@[ -L "./gopath/src/${REPO}" ] || ln -s ../../../.. ./gopath/src/github.com/wobscale/prometheus-irc-exporter
+	@[ -L "./gopath/src/${REPO}" ] || ln -s ../../../.. "./gopath/src/${REPO}"
 	@mkdir -p ./bin
-	GOPATH=${CURDIR}/gopath/ go build -o ./bin/prometheus-irc-exporter github.com/wobscale/prometheus-irc-exporter 
+	GOPATH=${CURDIR}/gopath/ go build -o ./bin/prometheus-irc-exporter "${REPO}"
 
 .PHONY: docker-push
 docker-push:
